@@ -52,9 +52,9 @@ X = df.drop("Target", axis=1)
 y = df["Target"]
 
 # -------------------------------------------------
-# Save feature names (VERY IMPORTANT for API)
+# Save feature names SAFELY (as Python list)
 # -------------------------------------------------
-feature_columns = X.columns
+feature_columns = list(X.columns)
 joblib.dump(feature_columns, "models/feature_columns.pkl")
 
 # -------------------------------------------------
@@ -66,7 +66,7 @@ X_scaled = scaler.fit_transform(X)
 joblib.dump(scaler, "models/scaler.pkl")
 
 # -------------------------------------------------
-# Time-series split (no shuffle)
+# Time-series split
 # -------------------------------------------------
 X_train, X_test, y_train, y_test = train_test_split(
     X_scaled, y, test_size=0.2, shuffle=False

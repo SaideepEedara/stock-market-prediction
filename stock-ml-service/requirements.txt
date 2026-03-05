@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pandas==2.3.3
+numpy
+scikit-learn==1.8.0
+yfinance
+ta
+joblib
+xgboost==2.0.3
