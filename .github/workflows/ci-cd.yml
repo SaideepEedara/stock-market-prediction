@@ -13,51 +13,66 @@ jobs:
 
     steps:
 
-    # Checkout repository
+    # 1️⃣ Checkout repository
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Setup Node
+
+    # 2️⃣ Setup Node
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 18
 
-    # Install backend dependencies
+
+    # 3️⃣ Install Backend Dependencies
     - name: Install Backend Dependencies
       run: |
         cd mern-auth/backend
         npm install
 
-    # Install frontend dependencies
+
+    # 4️⃣ Install Frontend Dependencies
     - name: Install Frontend Dependencies
       run: |
         cd mern-auth/frontend
         npm install
 
-    # Setup Python
+
+    # 5️⃣ Setup Python
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
 
-    # Install ML service dependencies
+
+    # 6️⃣ Install ML Dependencies
     - name: Install ML Dependencies
       run: |
         cd stock-ml-service
         pip install -r requirements.txt
 
-    # Build Docker images
+
+    # 7️⃣ Create Backend .env File (IMPORTANT FIX)
+    - name: Create backend environment file
+      run: |
+        echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> mern-auth/backend/.env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> mern-auth/backend/.env
+
+
+    # 8️⃣ Build Docker Containers
     - name: Build Docker Containers
       run: docker compose build
 
-    # Run containers
+
+    # 9️⃣ Run Docker Containers
     - name: Run Containers
       run: |
         docker compose up -d
-        sleep 20
+        sleep 25
         docker compose ps
 
-    # Stop containers
+
+    # 🔟 Stop Containers
     - name: Stop Containers
       run: docker compose down
